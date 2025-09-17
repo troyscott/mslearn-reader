@@ -1,0 +1,7 @@
+<!-- templates/content.html -->
+<div class="content">
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% endif %}
+    {{ content | safe }}
+</div>

@@ -1,0 +1,8 @@
+<div class="nav-title">Module Navigation</div>
+{% for section in sections %}
+<div class="nav-item" 
+     hx-get="/load-section?section_id={{ section.id }}&url={{ url | urlencode }}"
+     hx-target="#main-content">
+    {{ section.title }}
+</div>
+{% endfor %}

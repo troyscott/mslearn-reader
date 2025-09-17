@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS Learn Formatter</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin-bottom: 20px;
+            color: #0078d4;
+        }
+
+        .url-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+
+        .load-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .load-btn:hover {
+            background: #106ebe;
+        }
+
+        .load-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .messages {
+            margin-top: 15px;
+            min-height: 20px;
+        }
+
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            min-height: 500px;
+        }
+
+        .navigation {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .nav-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #0078d4;
+            border-bottom: 2px solid #e1e5e9;
+            padding-bottom: 10px;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #f8f9ff;
+            border-left-color: #0078d4;
+        }
+
+        .nav-item.active {
+            background: #e3f2fd;
+            color: #0078d4;
+            border-left-color: #0078d4;
+            font-weight: 600;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 500px;
+        }
+
+        .content {
+            font-size: 18px;
+            line-height: 1.7;
+            max-width: none;
+        }
+
+        .content h1, .content h2, .content h3 {
+            margin: 40px 0 20px 0;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .content h1 {
+            font-size: 2.4em;
+            border-bottom: 3px solid #0078d4;
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .content h2 {
+            font-size: 2em;
+            color: #0078d4;
+            margin-top: 50px;
+        }
+
+        .content h3 {
+            font-size: 1.6em;
+            color: #34495e;
+            margin-top: 35px;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .content ul, .content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .content li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .content pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .content code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .content blockquote {
+            border-left: 4px solid #0078d4;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background: #f8f9ff;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .content th, .content td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .content th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .htmx-indicator {
+            display: none;
+        }
+
+        .htmx-request .htmx-indicator {
+            display: inline;
+        }
+
+        .htmx-request .load-btn {
+            opacity: 0.6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .content-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                order: 2;
+                position: static;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .url-form {
+                flex-direction: column;
+            }
+            
+            .url-input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Microsoft Learning Module Formatter</h1>
+            
+            <form hx-post="/load-module" hx-target="#messages" class="url-form">
+                <input 
+                    type="url" 
+                    name="url"
+                    class="url-input" 
+                    placeholder="Enter Microsoft Learning module URL..."
+                    value="https://learn.microsoft.com/en-us/training/modules/get-started-data-warehouse/"
+                    required
+                >
+                <button type="submit" class="load-btn">
+                    Load Module
+                    <span class="htmx-indicator">Loading...</span>
+                </button>
+            </form>
+            
+            <div id="messages" class="messages"></div>
+        </div>
+
+        <div class="content-area">
+            <div id="navigation" class="navigation">
+                <div class="nav-title">Module Navigation</div>
+                <div class="nav-item">Load a module to see navigation</div>
+            </div>
+
+            <div id="main-content" class="main-content">
+                <div class="content">
+                    <h1>Welcome to MS Learn Formatter</h1>
+                    <p>This tool reformats Microsoft Learning modules for better readability while preserving navigation.</p>
+                    
+                    <h2>How to use:</h2>
+                    <ol>
+                        <li>Enter a Microsoft Learning module URL above</li>
+                        <li>Click "Load Module" to fetch and format content</li>
+                        <li>Navigate through sections using the sidebar</li>
+                    </ol>
+
+                    <h2>Features:</h2>
+                    <ul>
+                        <li>Clean, distraction-free formatting</li>
+                        <li>Preserved module structure and navigation</li>
+                        <li>Mobile-responsive design</li>
+                        <li>Real-time content loading with HTMX</li>
+                        <li>Local Flask server bypasses CORS restrictions</li>
+                    </ul>
+
+                    <h3>Example URLs to try:</h3>
+                    <ul>
+                        <li>https://learn.microsoft.com/en-us/azure/</li>
+                        <li>https://docs.microsoft.com/en-us/learn/modules/</li>
+                        <li>Any Microsoft Learn module URL</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
