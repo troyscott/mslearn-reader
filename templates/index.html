@@ -27,30 +27,31 @@
 
         .header {
             background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .header h1 {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             color: #0078d4;
+            font-size: 1.6em;
         }
 
         .url-form {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: nowrap;
         }
 
         .url-input {
             flex: 1;
-            min-width: 300px;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         .url-input:focus {
@@ -62,11 +63,12 @@
             background: #0078d4;
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.2s;
+            white-space: nowrap;
         }
 
         .load-btn:hover {
@@ -79,17 +81,19 @@
         }
 
         .messages {
-            margin-top: 15px;
-            min-height: 20px;
+            margin-left: 12px;
+            display: flex;
+            align-items: center;
         }
 
         .success {
             background: #d4edda;
             border: 1px solid #c3e6cb;
             color: #155724;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            white-space: nowrap;
         }
 
         .error {
@@ -103,53 +107,61 @@
 
         .content-area {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 220px 1fr;
             gap: 20px;
             min-height: 500px;
         }
 
         .navigation {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             height: fit-content;
             position: sticky;
             top: 20px;
+            border: 1px solid #e5e7eb;
         }
 
         .nav-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #0078d4;
-            border-bottom: 2px solid #e1e5e9;
-            padding-bottom: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .nav-item {
-            padding: 12px 15px;
-            margin: 5px 0;
-            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #6b7280;
+            border-left: 2px solid transparent;
         }
 
         .nav-item:hover {
-            background: #f8f9ff;
-            border-left-color: #0078d4;
+            background: #f9fafb;
+            border-left-color: #3b82f6;
+            color: #374151;
+            transform: translateX(2px);
         }
 
         .nav-item.active {
-            background: #e3f2fd;
-            color: #0078d4;
-            border-left-color: #0078d4;
-            font-weight: 600;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #3b82f6;
+            font-weight: 500;
         }
 
         .main-content {
-            background: white;
+            background: #faf8f5;;
             border-radius: 12px;
             padding: 40px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -340,9 +352,8 @@
                     Load Module
                     <span class="htmx-indicator">Loading...</span>
                 </button>
+                <div id="messages" class="messages"></div>
             </form>
-            
-            <div id="messages" class="messages"></div>
         </div>
 
         <div class="content-area">
