@@ -259,6 +259,22 @@
             color: #374151;
         }
 
+        /* Hide specific Microsoft Learn UI elements - be more targeted */
+        .content .popover,
+        .content .bread-crumbs,
+        .content details.popover {
+            display: none !important;
+        }
+
+        /* Hide feedback and interactive elements */
+        .content .feedback-container,
+        .content .rating-container,
+        .content .interactive-footer,
+        .content .feedback-section,
+        .content section.feedback-section {
+            display: none !important;
+        }
+
         .htmx-indicator {
             display: none;
         }
